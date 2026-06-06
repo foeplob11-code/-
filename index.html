@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>우서 월드 - 상황극</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 게임 캔버스 -->
+<canvas id="game"></canvas>
+
+<!-- 상단 이름표 / 하단 조작 안내 -->
+<div id="nameTag" class="hidden"></div>
+<div id="onlineBadge" class="hidden"></div>
+<div id="hud" class="hidden" data-i18n="hud"></div>
+
+<!-- ===== 시작 화면 ===== -->
+<div id="startScreen" class="overlay">
+  <div class="panel">
+    <h1 class="title">우서 월드</h1>
+    <p class="subtitle" data-i18n="tagline"></p>
+
+    <div class="row">
+      <label data-i18n="lang"></label>
+      <select id="langSelectStart" class="grow"></select>
+    </div>
+
+    <div class="row">
+      <label data-i18n="nameLabel"></label>
+      <input id="nameInput" type="text" class="grow" maxlength="16" data-i18n-ph="namePh">
+    </div>
+
+    <div class="row">
+      <label data-i18n="genderLabel"></label>
+      <div class="gender-pick grow">
+        <button id="gMale"   data-gender="male"   data-i18n="male"></button>
+        <button id="gFemale" data-gender="female" data-i18n="female"></button>
+      </div>
+    </div>
+
+    <hr>
+    <div class="seg">
+      <button id="continueBtn" class="ghost hidden" data-i18n="continue"></button>
+      <button id="startBtn" class="primary grow" data-i18n="start"></button>
+    </div>
+    <p class="hint" style="margin-top:12px" data-i18n="startHint"></p>
+  </div>
+</div>
+
+<!-- ===== ESC 메뉴 ===== (위에서 두 번째 = 설정) -->
+<div id="escMenu" class="overlay hidden">
+  <div class="panel">
+    <h2 class="h" data-i18n="menuTitle"></h2>
+    <div class="menu-list">
+      <button data-action="resume"><span class="idx">1</span><span data-i18n="resume"></span></button>
+      <button data-action="settings"><span class="idx">2</span><span data-i18n="settings"></span></button>
+      <button data-action="character"><span class="idx">3</span><span data-i18n="charEdit"></span></button>
+      <button data-action="map"><span class="idx">4</span><span data-i18n="mapEdit"></span></button>
+      <button data-action="chat"><span class="idx">5</span><span data-i18n="chat"></span></button>
+      <button data-action="save"><span class="idx">6</span><span data-i18n="save"></span></button>
+      <button data-action="title"><span class="idx">7</span><span data-i18n="toTitle"></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 설정 ===== -->
+<div id="settingsPanel" class="overlay hidden">
+  <div class="panel">
+    <h2 class="h" data-i18n="settings"></h2>
+    <div class="row">
+      <label data-i18n="lang"></label>
+      <select id="langSelect" class="grow"></select>
+    </div>
+    <div class="row">
+      <label data-i18n="nameLabel"></label>
+      <input id="nameInput2" type="text" class="grow" maxlength="16">
+    </div>
+    <div class="row">
+      <label data-i18n="volume"></label>
+      <input id="volSlider" type="range" min="0" max="1" step="0.05" class="grow">
+    </div>
+    <div class="row">
+      <label data-i18n="tts"></label>
+      <div class="seg grow">
+        <button id="ttsToggle" class="grow"></button>
+      </div>
+    </div>
+    <div class="row">
+      <label data-i18n="mic"></label>
+      <div class="seg grow">
+        <button id="micToggle" class="grow"></button>
+      </div>
+    </div>
+    <hr>
+    <p class="hint" data-i18n="controlsHelp"></p>
+    <hr>
+    <div class="seg">
+      <button id="wipeBtn" class="ghost" data-i18n="wipe"></button>
+      <button class="primary grow" data-back data-i18n="back"></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 캐릭터 에디터 ===== -->
+<div id="charEditor" class="overlay hidden">
+  <div class="panel wide">
+    <h2 class="h" data-i18n="charEdit"></h2>
+    <div class="editor-wrap">
+      <div class="editor-left">
+        <canvas id="charCanvas" width="320" height="480"></canvas>
+        <p class="hint" data-i18n="charCanvasHint"></p>
+      </div>
+      <div class="editor-right">
+        <div class="row">
+          <label data-i18n="genderLabel"></label>
+          <div class="seg grow">
+            <button id="ceMale" data-gender="male" class="grow" data-i18n="male"></button>
+            <button id="ceFemale" data-gender="female" class="grow" data-i18n="female"></button>
+          </div>
+        </div>
+        <div class="row">
+          <label data-i18n="skin"></label>
+          <input id="skinColor" type="color" value="#f0c89b">
+          <label data-i18n="hair" style="width:auto"></label>
+          <input id="hairColor" type="color" value="#2a2118">
+        </div>
+        <hr>
+        <div class="row">
+          <label data-i18n="layer"></label>
+          <div class="seg grow">
+            <button id="layClothes" class="grow active" data-layer="clothes" data-i18n="clothes"></button>
+            <button id="layAcc" class="grow" data-layer="acc" data-i18n="accessory"></button>
+          </div>
+        </div>
+        <div class="row">
+          <label data-i18n="tool"></label>
+          <div class="seg grow">
+            <button id="toolPen" class="grow active" data-tool="pen" data-i18n="pen"></button>
+            <button id="toolErase" class="grow" data-tool="erase" data-i18n="erase"></button>
+            <button id="toolFill" class="grow" data-tool="fill" data-i18n="fill"></button>
+          </div>
+        </div>
+        <label class="hint" data-i18n="color"></label>
+        <div class="palette" id="charPalette"></div>
+        <div class="row">
+          <input id="customColor" type="color" value="#ff6699">
+          <button id="addColor" class="sm" data-i18n="addColor"></button>
+        </div>
+        <hr>
+        <div class="seg">
+          <button id="clearLayer" class="ghost" data-i18n="clearLayer"></button>
+          <button id="randomLook" class="ghost" data-i18n="random"></button>
+          <button id="charSave" class="pink grow" data-i18n="apply"></button>
+        </div>
+        <button style="margin-top:8px;width:100%" data-back data-i18n="back"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 맵 에디터 상단 바 ===== -->
+<div id="mapEditorBar">
+  <strong data-i18n="mapEdit"></strong>
+  <div id="mapPalette"></div>
+  <div class="toolset">
+    <button id="meErase" class="sm" data-i18n="erase"></button>
+    <button id="meReset" class="sm" data-i18n="resetCity"></button>
+    <button id="meClear" class="sm" data-i18n="clearMap"></button>
+    <button id="meDone" class="sm primary" data-i18n="done"></button>
+  </div>
+  <span id="mapHint" data-i18n="mapHint"></span>
+</div>
+
+<!-- ===== 채팅 ===== -->
+<div id="chatPanel">
+  <div id="chatHead">
+    <span class="t" data-i18n="chat"></span>
+    <button id="voiceBtn" class="iconbtn sm" title="voice chat">📞</button>
+    <button id="chatTts" class="iconbtn sm" title="TTS">🔊</button>
+    <button id="chatClose" class="iconbtn sm">✕</button>
+  </div>
+  <div id="chatLog"></div>
+  <div id="chatInputRow">
+    <button id="chatMic" class="iconbtn" title="voice">🎤</button>
+    <input id="chatInput" type="text" data-i18n-ph="chatPh">
+    <button id="chatSend" class="primary sm" data-i18n="send"></button>
+  </div>
+</div>
+
+<!-- 토스트 -->
+<div id="toast"></div>
+
+<script src="game.js"></script>
+</body>
+</html>

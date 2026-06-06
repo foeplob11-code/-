@@ -1,0 +1,13 @@
+{
+  "name": "useo-world",
+  "version": "1.0.0",
+  "description": "우서 월드 - 온라인 2D 픽셀 상황극 게임 (멀티플레이 + 음성채팅)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}
