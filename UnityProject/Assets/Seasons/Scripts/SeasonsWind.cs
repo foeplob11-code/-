@@ -32,7 +32,7 @@ namespace RealisticSeasons
         static readonly int BendId = Shader.PropertyToID("_BendAmount");
 
         float seasonFactor = 1f, current, windTime;
-        readonly Dictionary<(int, string), Material> variants = new Dictionary<(int, string), Material>();
+        readonly Dictionary<(Material, string), Material> variants = new Dictionary<(Material, string), Material>();
 
         /// <summary>How a renderer (or one of its sub-meshes) moves.</summary>
         struct Profile
@@ -182,7 +182,7 @@ namespace RealisticSeasons
 
         Material Variant(Material src, Profile p)
         {
-            var key = (src.GetInstanceID(), p.key);
+            var key = (src, p.key);
             if (variants.TryGetValue(key, out Material cached)) return cached;
 
             bool clip = IsAlphaClipped(src);

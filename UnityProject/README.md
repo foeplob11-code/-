@@ -8,7 +8,7 @@ Blender로 만든 사실적인 사계절 디오라마 타일 4개와 소품 팩�
 ## 열기
 
 1. **Unity Hub → Add → Add project from disk → 이 `UnityProject` 폴더** 선택.
-   - 기준 버전은 Unity 6 (`6000.0.23f1`). 다른 Unity 6 / 2022.3 LTS로 열어도 된다
+   - Unity 6 (`6000.0` 이상) 필요. 프로젝트 버전은 `6000.6.0f1`로 맞춰 두었고, 다른 Unity 6 버전으로 열어도 된다
      (Hub가 버전을 물으면 설치된 버전을 고르면 됨).
 2. 처음 열 때 Package Manager가 **glTFast**(`com.unity.cloud.gltfast`, Unity 공식 glTF 임포터)를
    자동으로 설치하고 `.glb` 두 개를 임포트한다.
@@ -19,7 +19,7 @@ Blender로 만든 사실적인 사계절 디오라마 타일 4개와 소품 팩�
 > 처음 열 때 "새 Input System 백엔드를 켤까요?(Restart)" 창이 뜨면 **Yes**를 눌러도, **No**를 눌러도 된다
 > (스크립트가 두 입력 방식을 모두 지원함).
 >
-> glTFast 버전(`Packages/manifest.json`의 `6.8.0`)을 찾지 못한다는 오류가 나면
+> glTFast 버전(`Packages/manifest.json`의 `6.20.0`)을 찾지 못한다는 오류가 나면
 > Package Manager → **+ → Add package by name → `com.unity.cloud.gltfast`** 로 최신 버전을 설치하면 된다.
 
 ## 터미널로 게임 만들어서 실행하기
