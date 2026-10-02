@@ -3,6 +3,8 @@
 같은 장소(벚나무가 있는 언덕, 연못, 바위, 쓰러진 통나무, 나무 울타리, 가문비나무)를
 봄·여름·가을·겨울 네 계절로 만든 7 m × 7 m 디오라마 타일 4개. Blender 5.2로 생성.
 
+![four seasons](seasons_overview.png)
+
 | 봄 Spring | 여름 Summer | 가을 Autumn | 겨울 Winter |
 |---|---|---|---|
 | ![spring](spring_tile.png) | ![summer](summer_tile.png) | ![autumn](autumn_tile.png) | ![winter](winter_tile.png) |
@@ -19,6 +21,7 @@
 | `realistic_seasons.glb` | glTF 바이너리 (텍스처 포함) — Blender / Unity / Unreal / Godot / three.js 등에 바로 임포트 |
 | `*_tile.png` | 계절별 렌더 (768×768, 투명 배경, 계절별 조명) |
 | `spring_closeup.png` | 흙 단면·바위 클로즈업 |
+| `seasons_overview.png` | 네 계절 나란히 보기 |
 | `realistic_seasons.py` | 씬을 처음부터 다시 만드는 생성 스크립트 (.blend가 필요하면 이걸 Blender에서 실행) |
 
 ## 흙과 돌
