@@ -50,3 +50,7 @@ node server.js
 ## 구조
 - `index.html`, `style.css`, `game.js` — 클라이언트(게임)
 - `server.js` — 정적 파일 + WebSocket 멀티플레이 + WebRTC 시그널링 (의존성 0)
+
+## 3D 사계절 에셋 (Unity)
+`UnityProject/` 폴더는 사실적인 사계절 디오라마 타일과 소품 팩을 담은 별도의 Unity 프로젝트입니다.
+Unity Hub에서 이 폴더를 열면 데모 씬이 자동으로 만들어집니다. 자세한 내용은 [`UnityProject/README.md`](UnityProject/README.md).
