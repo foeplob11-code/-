@@ -16,6 +16,9 @@ Blender로 만든 사실적인 사계절 디오라마 타일 4개와 소품 팩�
    안 열리면 메뉴 **Seasons → Build Demo Scene**.
 4. ▶ Play.
 
+> 처음 열 때 "새 Input System 백엔드를 켤까요?(Restart)" 창이 뜨면 **Yes**를 눌러도, **No**를 눌러도 된다
+> (스크립트가 두 입력 방식을 모두 지원함).
+>
 > glTFast 버전(`Packages/manifest.json`의 `6.8.0`)을 찾지 못한다는 오류가 나면
 > Package Manager → **+ → Add package by name → `com.unity.cloud.gltfast`** 로 최신 버전을 설치하면 된다.
 
