@@ -43,7 +43,8 @@ namespace RealisticSeasons
     }
 
     /// <summary>
-    /// Shows one season tile, all four side by side, or the props showcase, and relights the scene to match.
+    /// Shows one season tile, all four side by side, or the props showcase, and relights the scene to match
+    /// (and tells <see cref="SeasonsWind"/> how windy the season is).
     /// Keys: 1 spring · 2 summer · 3 autumn · 4 winter · 0 all four · P props · H toggle help.
     /// Tiles are found by their node names in realistic_seasons.glb (Spring_Tile, Summer_Tile, ...).
     /// </summary>
@@ -53,6 +54,7 @@ namespace RealisticSeasons
         public Transform propsRoot;
         public Light sun;
         public OrbitCamera orbit;
+        public SeasonsWind wind;
         public bool startWithOverview = true;
         public Season startSeason = Season.Spring;
         public bool showHelp = true;
@@ -100,6 +102,13 @@ namespace RealisticSeasons
             }
             if (sun != null)
                 RenderSettings.sun = sun;
+            if (wind == null)
+                wind = GetComponent<SeasonsWind>();
+            if (wind == null && tilesRoot != null)   // scene built before wind existed
+            {
+                wind = gameObject.AddComponent<SeasonsWind>();
+                wind.roots = propsRoot != null ? new[] { tilesRoot, propsRoot } : new[] { tilesRoot };
+            }
         }
 
         void Start()
@@ -123,6 +132,7 @@ namespace RealisticSeasons
             for (int i = 0; i < 4; i++)
                 if (tiles[i] != null) tiles[i].gameObject.SetActive(i == (int)season);
             ApplyLighting(lighting[(int)season]);
+            if (wind != null) wind.SetSeason(season);
             Transform t = tiles[(int)season];
             if (orbit != null && t != null)
                 orbit.FocusOn(t.position + new Vector3(0f, 1.05f, -0.3f), TileDistance, TileYaw, TilePitch, snap);
@@ -143,6 +153,7 @@ namespace RealisticSeasons
             }
             if (n > 0) center /= n;
             ApplyLighting(lighting[Overview]);
+            if (wind != null) wind.SetNeutral();
             if (orbit != null)
                 orbit.FocusOn(center + Vector3.up, 30f, 200f, 28f, snap);
             status = "All seasons";
@@ -155,6 +166,7 @@ namespace RealisticSeasons
             foreach (Transform t in tiles)
                 if (t != null) t.gameObject.SetActive(true);
             ApplyLighting(lighting[Overview]);
+            if (wind != null) wind.SetNeutral();
             Bounds b = WorldBounds(propsRoot);
             if (orbit != null)
                 orbit.FocusOn(b.center, b.extents.magnitude * 1.8f, 200f, 30f, snap);
@@ -198,9 +210,10 @@ namespace RealisticSeasons
                 };
                 helpStyle.normal.textColor = Color.white;
             }
-            GUI.Box(new Rect(12f, 12f, 640f, 74f),
+            string windLine = wind != null && wind.enabled ? $"Wind {wind.strength:0.00}   Z / X: weaker / stronger" : "";
+            GUI.Box(new Rect(12f, 12f, 640f, 92f),
                 status + "\n1 Spring   2 Summer   3 Autumn   4 Winter   0 All   P Props   H Hide help\n" +
-                "Right/left drag: orbit   Middle or Shift+drag: pan   Wheel: zoom   WASD: move", helpStyle);
+                "Right/left drag: orbit   Middle or Shift+drag: pan   Wheel: zoom   WASD: move\n" + windLine, helpStyle);
         }
 
         static Transform FindDeep(Transform root, string name)

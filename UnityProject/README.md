@@ -26,6 +26,7 @@ Blender로 만든 사실적인 사계절 디오라마 타일 4개와 소품 팩�
 | `1` `2` `3` `4` | 봄 / 여름 / 가을 / 겨울 타일만 보기 (계절별 태양·하늘·안개로 바뀜) |
 | `0` | 네 계절 나란히 보기 |
 | `P` | 소품 팩 보기 |
+| `Z` / `X` | 바람 약하게 / 세게 |
 | 우클릭(또는 좌클릭) 드래그 | 회전 |
 | 휠클릭 드래그 / Shift + 드래그 | 이동 |
 | 휠 | 줌 |
@@ -39,6 +40,8 @@ Blender로 만든 사실적인 사계절 디오라마 타일 4개와 소품 팩�
 | `Assets/Seasons/Models/realistic_seasons.glb` | 7 m × 7 m 타일 4개 (`Spring_Tile` … `Winter_Tile`), 약 31만 폴리곤, 텍스처 포함 |
 | `Assets/Seasons/Models/realistic_props.glb` | 소품 22종 (`Prop_*`), 약 6만 폴리곤, 가로등 점광원 포함 |
 | `Assets/Seasons/Scripts/SeasonSwitcher.cs` | 계절 전환 + 계절별 조명 프리셋(인스펙터에서 수정 가능) |
+| `Assets/Seasons/Scripts/SeasonsWind.cs` | 바람: 나무·풀·꽃 재질을 바람 셰이더로 바꾸고 방향·세기·돌풍을 매 프레임 전달 |
+| `Assets/Seasons/Shaders/WindFoliage.shader` | 바람에 흔들리는 PBR 셰이더 (Built-in 렌더 파이프라인) |
 | `Assets/Seasons/Scripts/OrbitCamera.cs` | 회전·이동·줌 카메라 |
 | `Assets/Seasons/Scripts/InputCompat.cs` | 구 Input Manager / 새 Input System 둘 다 지원 |
 | `Assets/Seasons/Editor/SeasonsSceneBuilder.cs` | 데모 씬 생성기 (메뉴 `Seasons`) |
@@ -47,6 +50,20 @@ Blender로 만든 사실적인 사계절 디오라마 타일 4개와 소품 팩�
 
 씬 생성기는 GLB에 같이 들어 있는 Blender 카메라와 태양은 꺼 두고, Unity용 태양(Directional Light,
 소프트 섀도)과 카메라를 새로 만든다. 프로젝트 색 공간은 Linear로, 그림자 거리는 최소 90 m로 늘린다.
+
+## 바람
+
+Play를 누르면 나무와 풀이 바람에 흔들린다. 셰이더가 버텍스를 움직이는 방식이라 애니메이션 데이터는 없다.
+
+- **나무**(벚나무·가문비·자작나무·관목): 밑동은 고정되고 위로 갈수록 크게 휜다. 가지와 잎이 같은 식으로 휘어서
+  잎이 가지에서 떨어져 보이지 않는다. 겨울 가지 위의 눈도 함께 움직인다.
+- **잎**: 휘는 것에 더해 잎 카드마다 파르르 떨린다(자작나무·벚나무가 가장 많이, 가문비 솔잎은 조금).
+- **풀·갈대**: 뿌리는 고정, 끝만 휜다. 언덕 위에 난 풀도 뿌리가 움직이지 않는다(블레이드 UV 기준).
+- **꽃·부들**: 줄기가 밑에서 꺾이고 꽃송이가 줄기 끝을 따라간다.
+- 바람은 장면을 가로지르는 파도처럼 지나가고, 돌풍이 불었다 잦아들며 방향도 천천히 바뀐다.
+- 계절마다 세기가 다르다: 가을 1.3배, 봄 0.9배, 겨울 0.8배, 여름 0.7배.
+- `Season Switcher` 오브젝트의 **SeasonsWind**에서 세기·방향·속도·돌풍 정도·계절별 배율을 조절할 수 있다.
+- 땅에 떨어진 낙엽·꽃잎, 바위, 건물은 움직이지 않는다.
 
 ## 타일
 

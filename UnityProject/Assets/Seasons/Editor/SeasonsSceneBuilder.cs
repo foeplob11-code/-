@@ -9,8 +9,9 @@ namespace RealisticSeasons.EditorTools
 {
     /// <summary>
     /// Builds Assets/Seasons/Scenes/Seasons.unity from the two GLBs: the four season tiles, the props pack,
-    /// a sun, an orbit camera and the SeasonSwitcher. Runs once automatically after the GLBs have been
-    /// imported (glTFast), and on demand from the menu: Seasons > Build Demo Scene.
+    /// a sun, an orbit camera, the SeasonSwitcher and SeasonsWind (plants move in the wind). Runs once
+    /// automatically after the GLBs have been imported (glTFast), and on demand from the menu:
+    /// Seasons > Build Demo Scene.
     /// </summary>
     static class SeasonsSceneBuilder
     {
@@ -115,6 +116,10 @@ namespace RealisticSeasons.EditorTools
             switcher.propsRoot = props != null ? props.transform : null;
             switcher.sun = sun;
             switcher.orbit = orbit;
+            var wind = switcher.gameObject.AddComponent<SeasonsWind>();
+            wind.windShader = Shader.Find("Seasons/Wind Foliage");
+            wind.roots = props != null ? new[] { tiles.transform, props.transform } : new[] { tiles.transform };
+            switcher.wind = wind;
             switcher.ApplyLighting(switcher.lighting[4]);   // so the scene already looks right in edit mode
             camGo.transform.SetPositionAndRotation(new Vector3(-8f, 15f, 28f), Quaternion.Euler(28f, 200f, 0f));
 
@@ -129,7 +134,7 @@ namespace RealisticSeasons.EditorTools
                 EditorBuildSettings.scenes = scenes.ToArray();
             }
             Selection.activeGameObject = switcher.gameObject;
-            Debug.Log($"Seasons: built {ScenePath}. Press Play, then 1-4 / 0 / P to switch views.");
+            Debug.Log($"Seasons: built {ScenePath}. Press Play, then 1-4 / 0 / P to switch views, Z / X for wind.");
             return true;
         }
 
