@@ -19,7 +19,7 @@ namespace RealisticSeasons.EditorTools
         const string TilesPath = Root + "/Models/realistic_seasons.glb";
         const string PropsPath = Root + "/Models/realistic_props.glb";
         const string SceneDir = Root + "/Scenes";
-        const string ScenePath = SceneDir + "/Seasons.unity";
+        internal const string ScenePath = SceneDir + "/Seasons.unity";
         static readonly Vector3 PropsOffset = new Vector3(30f, 0f, -15f);   // beside the tiles, not on top of them
 
         [MenuItem("Seasons/Build Demo Scene")]
@@ -55,7 +55,7 @@ namespace RealisticSeasons.EditorTools
             };
         }
 
-        static bool Build()
+        internal static bool Build()
         {
             var tilesAsset = AssetDatabase.LoadAssetAtPath<GameObject>(TilesPath);
             if (tilesAsset == null)

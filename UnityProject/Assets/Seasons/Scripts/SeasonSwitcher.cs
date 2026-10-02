@@ -124,6 +124,7 @@ namespace RealisticSeasons
             if (InputCompat.DigitDown(0)) ShowAll();
             if (InputCompat.LetterDown('P')) ShowProps();
             if (InputCompat.LetterDown('H')) showHelp = !showHelp;
+            if (InputCompat.EscapeDown() && !Application.isEditor) Application.Quit();
         }
 
         /// <summary>Show a single season tile with its own lighting.</summary>
@@ -212,7 +213,7 @@ namespace RealisticSeasons
             }
             string windLine = wind != null && wind.enabled ? $"Wind {wind.strength:0.00}   Z / X: weaker / stronger" : "";
             GUI.Box(new Rect(12f, 12f, 640f, 92f),
-                status + "\n1 Spring   2 Summer   3 Autumn   4 Winter   0 All   P Props   H Hide help\n" +
+                status + "\n1 Spring   2 Summer   3 Autumn   4 Winter   0 All   P Props   H Hide help   Esc Quit\n" +
                 "Right/left drag: orbit   Middle or Shift+drag: pan   Wheel: zoom   WASD: move\n" + windLine, helpStyle);
         }
 

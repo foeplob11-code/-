@@ -22,6 +22,31 @@ Blender로 만든 사실적인 사계절 디오라마 타일 4개와 소품 팩�
 > glTFast 버전(`Packages/manifest.json`의 `6.8.0`)을 찾지 못한다는 오류가 나면
 > Package Manager → **+ → Add package by name → `com.unity.cloud.gltfast`** 로 최신 버전을 설치하면 된다.
 
+## 터미널로 게임 만들어서 실행하기
+
+Unity 창을 다 닫고 실행한다. 처음 한 번은 패키지 설치·임포트·빌드 때문에 몇 분 걸린다.
+
+**Windows (PowerShell)**
+```powershell
+cd C:\
+git clone -b claude/magical-wozniak-9vhj7z https://github.com/foeplob11-code/-.git seasons   # 이미 받았으면: cd C:\seasons; git pull
+$unity = (Get-ChildItem "C:\Program Files\Unity\Hub\Editor" | Sort-Object Name | Select-Object -Last 1).FullName + "\Editor\Unity.exe"
+Start-Process -Wait -FilePath $unity -ArgumentList "-batchmode","-quit","-projectPath","C:\seasons\UnityProject","-executeMethod","RealisticSeasons.EditorTools.SeasonsBuild.Build","-logFile","C:\seasons\build.log"
+& "C:\seasons\UnityProject\Builds\Windows\Seasons.exe"
+```
+
+**Mac (터미널)**
+```bash
+cd ~/Desktop && git clone -b claude/magical-wozniak-9vhj7z https://github.com/foeplob11-code/-.git seasons   # 이미 받았으면: cd ~/Desktop/seasons && git pull
+cd ~/Desktop/seasons
+APP="$(ls -d /Applications/Unity/Hub/Editor/*/Unity.app | tail -1)"
+"$APP/Contents/MacOS/Unity" -batchmode -quit -projectPath "$PWD/UnityProject" -executeMethod RealisticSeasons.EditorTools.SeasonsBuild.Build -logFile "$PWD/build.log"
+open UnityProject/Builds/Mac/Seasons.app
+```
+
+게임 파일이 안 생기면 `build.log`에서 `error`가 들어간 줄을 찾으면 원인이 나온다.
+에디터 안에서는 메뉴 **Seasons → Build Game**으로 같은 빌드를 만들 수 있다.
+
 ## 조작 (Play 모드)
 
 | 키 / 마우스 | 동작 |
@@ -35,6 +60,7 @@ Blender로 만든 사실적인 사계절 디오라마 타일 4개와 소품 팩�
 | 휠 | 줌 |
 | `WASD` / 방향키 | 시점 이동 |
 | `H` | 도움말 숨기기 |
+| `Esc` | 게임 종료 (빌드한 게임에서) |
 
 ## 들어 있는 것
 
@@ -48,6 +74,7 @@ Blender로 만든 사실적인 사계절 디오라마 타일 4개와 소품 팩�
 | `Assets/Seasons/Scripts/OrbitCamera.cs` | 회전·이동·줌 카메라 |
 | `Assets/Seasons/Scripts/InputCompat.cs` | 구 Input Manager / 새 Input System 둘 다 지원 |
 | `Assets/Seasons/Editor/SeasonsSceneBuilder.cs` | 데모 씬 생성기 (메뉴 `Seasons`) |
+| `Assets/Seasons/Editor/SeasonsBuild.cs` | 게임 빌드 (메뉴 `Seasons → Build Game` 또는 터미널) |
 | `Blender/` | 에셋 생성 스크립트 (Unity는 이 폴더를 무시함) |
 | `Docs/` | Blender 렌더 이미지 |
 

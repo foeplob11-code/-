@@ -52,6 +52,18 @@ namespace RealisticSeasons
 #endif
         }
 
+        public static bool EscapeDown()
+        {
+#if SEASONS_NEW_INPUT
+            var kb = Keyboard.current;
+            return kb != null && kb.escapeKey.wasPressedThisFrame;
+#elif SEASONS_OLD_INPUT
+            return Input.GetKeyDown(KeyCode.Escape);
+#else
+            return false;
+#endif
+        }
+
         public static bool ShiftHeld()
         {
 #if SEASONS_NEW_INPUT
